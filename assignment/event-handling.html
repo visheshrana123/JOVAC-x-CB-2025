@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Event Capturing & Bubbling Example</title>
+    <style>
+        #grandparent {
+            padding: 40px;
+            background-color: lightblue;
+        }
+        #parent {
+            padding: 30px;
+            background-color: lightgreen;
+        }
+        #child {
+            padding: 20px;
+            background-color: lightcoral;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="grandparent">
+        Grandparent
+        <div id="parent">
+            Parent
+            <div id="child">
+                Child
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Grandparent click 
+        document.getElementById("grandparent").addEventListener("click", function(e) {
+            e.stopPropagation(); 
+            console.log("grandparent - grandparent");
+        });
+
+        // Parent click 
+        document.getElementById("parent").addEventListener("click", function(e) {
+            e.stopPropagation(); 
+            console.log("parent - parent");
+        });
+
+        // Child click 
+        document.getElementById("child").addEventListener("click", function(e) {
+            e.stopPropagation(); 
+            console.log("child - child");
+        });
+    </script>
+
+</body>
+</html>
