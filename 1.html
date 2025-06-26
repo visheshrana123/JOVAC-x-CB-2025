@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>append vs appendChild</title>
+</head>
+<body>
+  <div id="parent"></div>
+
+  <script>
+    const parent = document.getElementById("parent");
+
+    const p1 = document.createElement("p");
+    p1.textContent = "This is from appendChild";
+    parent.appendChild(p1); 
+
+    const p2 = document.createElement("p");
+    p2.textContent = "This is from append";
+    parent.append(p2); 
+
+    parent.append(" — Some extra text added using append"); 
+
+    try {
+      parent.appendChild("This is text"); 
+    } catch (e) {
+      console.log("appendChild Error:", e.message);
+    }
+  </script>
+</body>
+</html>
