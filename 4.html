@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Page</title>
+  <style>
+    body { font-family: Arial; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo { width: 40px; height: 40px; }
+    .filters { margin: 10px 0; }
+    .product { border: 1px solid #ccc; padding: 10px; width: 200px; margin: 10px; }
+    .products { display: flex; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+
+  <div class="brand">
+    <img src="https://dummyimage.com/40x40/000/fff&text=L" class="logo" />
+    <h1>LuxBrand</h1>
+  </div>
+
+  <input type="text" id="searchInput" placeholder="Search products..." />
+  <div class="filters">
+    <button data-category="all">All</button>
+    <button data-category="shoes">Shoes</button>
+    <button data-category="fragrances">Garments</button>
+    <button data-category="watches">Watches</button>
+    <button data-category="sunglasses">Glasses</button>
+  </div>
+
+  <div class="products" id="productList"></div>
+
+  <script>
+    let allProducts = [];
+    const productList = document.getElementById("productList");
+
+    // Fetch products
+    fetch("https://dummyjson.com/products?limit=200")
+      .then(res => res.json())
+      .then(data => {
+        allProducts = data.products;
+        showProducts(allProducts);
+      });
+
+    function showProducts(products) {
+      productList.innerHTML = '';
+      products.map(product => {
+        const card = document.createElement("div");
+        card.className = "product";
+        card.innerHTML = `
+          <img src="${product.thumbnail}" width="100%" />
+          <h4>${product.title}</h4>
+          <p>${product.description || ""}</p>
+          <strong>$${product.price}</strong>
+        `;
+        productList.appendChild(card);
+      });
+    }
+
+    // Debounced search
+    let debounceTimer;
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      clearTimeout(debounceTimer);
+      const query = e.target.value.toLowerCase();
+
+      debounceTimer = setTimeout(() => {
+        const filtered = allProducts.filter(p => p.title.toLowerCase().includes(query));
+        showProducts(filtered);
+      }, 500);
+    });
+
+    // Category filter
+    document.querySelectorAll(".filters button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const category = btn.getAttribute("data-category");
+        if (category === "all") {
+          showProducts(allProducts);
+        } else {
+          const filtered = allProducts.filter(p =>
+            p.category.toLowerCase().includes(category)
+          );
+          showProducts(filtered);
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
