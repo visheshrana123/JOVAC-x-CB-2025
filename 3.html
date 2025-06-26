@@ -1,0 +1,16 @@
+<input type="text" id="search" placeholder="Type here" />
+
+<script>
+  let interval;
+  let lastInput = "";
+
+  document.getElementById("search").addEventListener("input", (e) => {
+    clearInterval(interval);
+    lastInput = e.target.value;
+
+    interval = setInterval(() => {
+      console.log("Debounced Input:", lastInput);
+      clearInterval(interval);
+    }, 500); 
+  });
+</script>
